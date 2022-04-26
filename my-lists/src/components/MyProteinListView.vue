@@ -6,7 +6,7 @@
       ><button
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
-        Home
+        <ArrowCircleLeftIcon className="h-6 w-6" />Home
       </button></router-link
     >
   </div>
@@ -14,11 +14,13 @@
 
 <script>
 import MyProteinTable from "@/components/MyProteinTable.vue";
+import { ArrowCircleLeftIcon } from "@heroicons/vue/solid";
 
 export default {
   name: "MyProtein",
   components: {
     MyProteinTable,
+    ArrowCircleLeftIcon,
   },
 };
 </script>
