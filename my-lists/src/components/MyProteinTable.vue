@@ -13,11 +13,22 @@
     <div>
       <label>泡</label>
       <div>
-        <input
-          type="text"
-          class="shadow appearance-none border rounded w-64 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          v-model="bubble"
+        泡だらけ
+        <StarIcon
+          v-for="index in indexes"
+          :key="index"
+          class="h-8 inline"
+          v-bind:class="
+            (hoverBubble && index <= bubbleIndex) ||
+            (clickedBubble && index <= bubble)
+              ? 'text-yellow-400'
+              : 'text-gray-400'
+          "
+          v-on:mouseover="mouseOverBubbleStar(index)"
+          v-on:mouseleave="mouseLeaveBubbleStar()"
+          v-on:click="clickBubbleStar(index)"
         />
+        泡なし
       </div>
     </div>
     <div>
@@ -88,7 +99,16 @@
       <tbody>
         <tr v-for="protein in proteins" :key="protein.id">
           <td class="border-b px-4 py-2">{{ protein.flavor }}</td>
-          <td class="border-b px-4 py-2">{{ protein.bubble }}</td>
+          <td class="border-b px-4 py-2">
+            <StarIcon
+              v-for="index in indexes"
+              :key="index"
+              class="h-8 inline"
+              v-bind:class="
+                index <= protein.bubble ? 'text-yellow-400' : 'text-gray-400'
+              "
+            />
+          </td>
           <td class="border-b px-4 py-2">{{ protein.lump }}</td>
           <td class="border-b px-4 py-2">{{ protein.taste }}</td>
           <td class="border-b px-4 py-2">{{ protein.tasteComment }}</td>
@@ -112,6 +132,7 @@ import {
   PlusCircleIcon,
   PencilAltIcon,
   BackspaceIcon,
+  StarIcon,
 } from "@heroicons/vue/solid";
 
 export default {
@@ -119,16 +140,20 @@ export default {
     PlusCircleIcon,
     PencilAltIcon,
     BackspaceIcon,
+    StarIcon,
   },
   data() {
     return {
       open: false,
+      hoverBubble: false,
+      clickedBubble: false,
+      bubbleIndex: 0,
       flavor: "",
-      bubble: "",
-      lump: "",
-      taste: "",
+      bubble: 0,
+      lump: 0,
+      taste: 0,
       tasteComment: "",
-      total: "",
+      total: 0,
       titles: [
         {
           logical: "flavor",
@@ -155,10 +180,22 @@ export default {
           physical: "合計",
         },
       ],
+      indexes: [1, 2, 3],
       proteins: [],
     };
   },
   methods: {
+    mouseOverBubbleStar(index) {
+      this.hoverBubble = true;
+      this.bubbleIndex = index;
+    },
+    mouseLeaveBubbleStar() {
+      this.hoverBubble = false;
+    },
+    clickBubbleStar(index) {
+      this.clickedBubble = true;
+      this.bubble = index;
+    },
     addProtein() {
       this.proteins.push({
         flavor: this.flavor,
