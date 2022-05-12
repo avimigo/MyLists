@@ -34,21 +34,42 @@
     <div>
       <label>ダマ</label>
       <div>
-        <input
-          type="text"
-          class="shadow appearance-none border rounded w-64 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          v-model="lump"
+        ダマだらけ
+        <StarIcon
+          v-for="index in indexes"
+          :key="index"
+          class="h-8 inline"
+          v-bind:class="
+            (hoverLump && index <= lumpIndex) || (clickedLump && index <= lump)
+              ? 'text-yellow-400'
+              : 'text-gray-400'
+          "
+          v-on:mouseover="mouseOverLumpStar(index)"
+          v-on:mouseleave="mouseLeaveLumpStar()"
+          v-on:click="clickLumpStar(index)"
         />
+        ダマなし
       </div>
     </div>
     <div>
       <label>味</label>
       <div>
-        <input
-          type="text"
-          class="shadow appearance-none border rounded w-64 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          v-model="taste"
+        Not for me
+        <StarIcon
+          v-for="index in indexes"
+          :key="index"
+          class="h-8 inline"
+          v-bind:class="
+            (hoverTaste && index <= tasteIndex) ||
+            (clickedTaste && index <= taste)
+              ? 'text-yellow-400'
+              : 'text-gray-400'
+          "
+          v-on:mouseover="mouseOverTasteStar(index)"
+          v-on:mouseleave="mouseLeaveTasteStar()"
+          v-on:click="clickTasteStar(index)"
         />
+        Just for me
       </div>
     </div>
     <div>
@@ -109,8 +130,26 @@
               "
             />
           </td>
-          <td class="border-b px-4 py-2">{{ protein.lump }}</td>
-          <td class="border-b px-4 py-2">{{ protein.taste }}</td>
+          <td class="border-b px-4 py-2">
+            <StarIcon
+              v-for="index in indexes"
+              :key="index"
+              class="h-8 inline"
+              v-bind:class="
+                index <= protein.lump ? 'text-yellow-400' : 'text-gray-400'
+              "
+            />
+          </td>
+          <td class="border-b px-4 py-2">
+            <StarIcon
+              v-for="index in indexes"
+              :key="index"
+              class="h-8 inline"
+              v-bind:class="
+                index <= protein.taste ? 'text-yellow-400' : 'text-gray-400'
+              "
+            />
+          </td>
           <td class="border-b px-4 py-2">{{ protein.tasteComment }}</td>
           <td class="border-b px-4 py-2">{{ protein.total }}</td>
           <td class="border-b px-4 py-2">
@@ -145,12 +184,18 @@ export default {
   data() {
     return {
       open: false,
+      flavor: "",
       hoverBubble: false,
       clickedBubble: false,
       bubbleIndex: 0,
-      flavor: "",
       bubble: 0,
+      hoverLump: false,
+      clickedLump: false,
+      lumpIndex: 0,
       lump: 0,
+      hoverTaste: false,
+      clickedTaste: false,
+      tasteIndex: 0,
       taste: 0,
       tasteComment: "",
       total: 0,
@@ -195,6 +240,28 @@ export default {
     clickBubbleStar(index) {
       this.clickedBubble = true;
       this.bubble = index;
+    },
+    mouseOverLumpStar(index) {
+      this.hoverLump = true;
+      this.lumpIndex = index;
+    },
+    mouseLeaveLumpStar() {
+      this.hoverLump = false;
+    },
+    clickLumpStar(index) {
+      this.clickedLump = true;
+      this.lump = index;
+    },
+    mouseOverTasteStar(index) {
+      this.hoverTaste = true;
+      this.tasteIndex = index;
+    },
+    mouseLeaveTasteStar() {
+      this.hoverTaste = false;
+    },
+    clickTasteStar(index) {
+      this.clickedTaste = true;
+      this.taste = index;
     },
     addProtein() {
       this.proteins.push({
