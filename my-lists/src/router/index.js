@@ -4,7 +4,7 @@ import MyProteinListView from "@/components/MyProteinListView.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/MyLists",
     name: "Home",
     component: HomeView,
   },
