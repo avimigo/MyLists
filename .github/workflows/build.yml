@@ -25,18 +25,18 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: 16.x
           cache: 'npm'
-          cache-dependency-path: "./sample/package-lock.json"
+          cache-dependency-path: "./my-lists/package-lock.json"
       - name: CI
         run: npm ci
-        working-directory: './sample'
+        working-directory: './my-lists'
       - name: Build
         run: npm run build --if-present
-        working-directory: './sample'
+        working-directory: './my-lists'
       - name: Test
         run: npm test
-        working-directory: './sample'
+        working-directory: './my-lists'
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3.7.3
         with:
